@@ -8,6 +8,14 @@ Aplicación individual desarrollada con Django y PostgreSQL para administrar dep
 - **Empleado** pertenece a un departamento y un cargo, registra quién lo creó y puede asociarse a varias capacitaciones.
 - **Capacitacion** puede estar asociada a varios empleados mediante ManyToMany.
 
+### Diagrama de relaciones
+
+```text
+Departamento 1 ───── N Empleado
+Cargo        1 ───── N Empleado
+Empleado     N ───── N Capacitacion
+Usuario      1 ───── N Empleado (creado_por)
+
 ## Requisitos
 Python, PostgreSQL, Django y las dependencias indicadas por el entorno de desarrollo (`python-dotenv` y el adaptador PostgreSQL).
 
