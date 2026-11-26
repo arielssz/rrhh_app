@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Empleados{% endblock %}
+{% block content %}
+<h1>Lista de Empleados</h1>
+
+    {% if perms.personal.add_empleado %}
+        <a href="{% url 'personal:empleado_crear' %}">Nuevo Empleado</a>
+    {% endif %}
+
+    <hr>
+
+    {% if empleados %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cédula</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Correo</th>
+                    <th>Departamento</th>
+                    <th>Cargo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empleado in empleados %}
+                    <tr>
+                        <td>{{ empleado.id }}</td>
+                        <td>{{ empleado.cedula }}</td>
+                        <td>{{ empleado.nombres }}</td>
+                        <td>{{ empleado.apellidos }}</td>
+                        <td>{{ empleado.email }}</td>
+                        <td>{{ empleado.departamento }}</td>
+                        <td>{{ empleado.cargo }}</td>
+                        <td>{{ empleado.get_estado_display }}</td>
+                        <td>
+                            <a href="{% url 'personal:empleado_detalle' empleado.pk %}">Ver</a>
+
+                            {% if perms.personal.change_empleado %}
+                                {% if perms.personal.delete_empleado or empleado.creado_por_id == user.id %}
+                                    | <a href="{% url 'personal:empleado_editar' empleado.pk %}">Editar</a>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if perms.personal.delete_empleado %}
+                                | <a href="{% url 'personal:empleado_eliminar' empleado.pk %}">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No existen empleados registrados.</p>
+    {% endif %}
+
+    <hr>
+    <a href="{% url 'personal:cargo_lista' %}">Volver a cargos</a>
+{% endblock %}

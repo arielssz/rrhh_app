@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar Cargo{% endblock %}
+{% block content %}
+<h1>Eliminar Cargo</h1>
+
+    <p>¿Estás seguro de que deseas eliminar el siguiente cargo?</p>
+
+    <p><strong>{{ cargo.nombre }}</strong></p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <button type="submit">Sí, eliminar</button>
+    </form>
+
+    <hr>
+
+    <a href="{% url 'personal:cargo_lista' %}">Cancelar</a>
+{% endblock %}

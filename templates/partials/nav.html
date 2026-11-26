@@ -1,0 +1,16 @@
+<nav>
+    <a href="{% url 'personal:empleado_lista' %}">Empleados</a> |
+    <a href="{% url 'personal:departamento_lista' %}">Departamentos</a> |
+    <a href="{% url 'personal:cargo_lista' %}">Cargos</a> |
+    <a href="{% url 'personal:capacitacion_lista' %}">Capacitaciones</a>
+    {% if user.is_authenticated %}
+        | Usuario: <strong>{{ user.username }}</strong>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}<button type="submit">Cerrar sesión</button>
+        </form>
+    {% else %}
+        | <a href="{% url 'login' %}">Iniciar sesión</a>
+        | <a href="{% url 'registro' %}">Registrarse</a>
+    {% endif %}
+</nav>
+<hr>

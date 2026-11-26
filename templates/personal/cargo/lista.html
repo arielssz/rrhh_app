@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Cargos{% endblock %}
+{% block content %}
+<h1>Lista de Cargos</h1>
+    {% if perms.personal.add_cargo %}
+        <a href="{% url 'personal:cargo_crear' %}">Nuevo Cargo</a>
+    {% endif %}
+    <hr>
+    {% if cargos %}
+        <table border="1">
+            <thead><tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Salario base</th><th>Activo</th><th>Acciones</th></tr></thead>
+            <tbody>
+                {% for cargo in cargos %}
+                    <tr>
+                        <td>{{ cargo.id }}</td><td>{{ cargo.nombre }}</td><td>{{ cargo.descripcion }}</td>
+                        <td>{{ cargo.salario_base }}</td><td>{{ cargo.activo|yesno:"Sí,No" }}</td>
+                        <td>
+                            <a href="{% url 'personal:cargo_detalle' cargo.pk %}">Ver</a>
+                            {% if perms.personal.change_cargo %}
+                                | <a href="{% url 'personal:cargo_editar' cargo.pk %}">Editar</a>
+                            {% endif %}
+                            {% if perms.personal.delete_cargo %}
+                                | <a href="{% url 'personal:cargo_eliminar' cargo.pk %}">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No existen cargos registrados.</p>
+    {% endif %}
+    <hr><a href="{% url 'personal:departamento_lista' %}">Volver a departamentos</a>
+{% endblock %}

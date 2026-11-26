@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Departamentos{% endblock %}
+{% block content %}
+<h1>Lista de Departamentos</h1>
+
+    {% if perms.personal.add_departamento %}
+        <a href="{% url 'personal:departamento_crear' %}">Nuevo Departamento</a>
+    {% endif %}
+    <hr>
+
+    {% if departamentos %}
+        <table border="1">
+            <thead>
+                <tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+                {% for departamento in departamentos %}
+                    <tr>
+                        <td>{{ departamento.id }}</td>
+                        <td>{{ departamento.nombre }}</td>
+                        <td>{{ departamento.descripcion }}</td>
+                        <td>
+                            <a href="{% url 'personal:departamento_detalle' departamento.pk %}">Ver</a>
+                            {% if perms.personal.change_departamento %}
+                                | <a href="{% url 'personal:departamento_editar' departamento.pk %}">Editar</a>
+                            {% endif %}
+                            {% if perms.personal.delete_departamento %}
+                                | <a href="{% url 'personal:departamento_eliminar' departamento.pk %}">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No existen departamentos registrados.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Detalle del Cargo{% endblock %}
+{% block content %}
+<h1>Detalle del Cargo</h1>
+    <p><strong>ID:</strong> {{ cargo.id }}</p>
+    <p><strong>Nombre:</strong> {{ cargo.nombre }}</p>
+    <p><strong>Descripción:</strong> {{ cargo.descripcion }}</p>
+    <p><strong>Salario base:</strong> {{ cargo.salario_base }}</p>
+    <p><strong>Activo:</strong> {{ cargo.activo|yesno:"Sí,No" }}</p>
+    <p><strong>Fecha de creación:</strong> {{ cargo.fecha_creacion }}</p>
+    <h2>Empleados con este cargo</h2>
+    <ul>
+        {% for empleado in cargo.empleados.all %}
+            <li><a href="{% url 'personal:empleado_detalle' empleado.pk %}">{{ empleado }}</a></li>
+        {% empty %}<li>No hay empleados asociados.</li>{% endfor %}
+    </ul>
+    <hr>
+    <a href="{% url 'personal:cargo_lista' %}">Volver a la lista</a>
+    {% if perms.personal.change_cargo %}
+        | <a href="{% url 'personal:cargo_editar' cargo.pk %}">Editar</a>
+    {% endif %}
+{% endblock %}

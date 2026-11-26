@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Capacitaciones{% endblock %}
+{% block content %}
+<h1>Lista de Capacitaciones</h1>
+    {% if perms.personal.add_capacitacion %}
+        <a href="{% url 'personal:capacitacion_crear' %}">Nueva Capacitación</a>
+    {% endif %}
+    <hr>
+    {% if capacitaciones %}
+        <table border="1">
+            <thead><tr><th>ID</th><th>Nombre</th><th>Modalidad</th><th>Fecha Inicio</th><th>Fecha Fin</th><th>Duración</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody>
+                {% for capacitacion in capacitaciones %}
+                    <tr>
+                        <td>{{ capacitacion.id }}</td><td>{{ capacitacion.nombre }}</td>
+                        <td>{{ capacitacion.get_modalidad_display }}</td><td>{{ capacitacion.fecha_inicio }}</td>
+                        <td>{{ capacitacion.fecha_fin }}</td><td>{{ capacitacion.duracion_horas }}</td>
+                        <td>{{ capacitacion.activa|yesno:"Activa,Inactiva" }}</td>
+                        <td>
+                            <a href="{% url 'personal:capacitacion_detalle' capacitacion.pk %}">Ver</a>
+                            {% if perms.personal.change_capacitacion %}
+                                | <a href="{% url 'personal:capacitacion_editar' capacitacion.pk %}">Editar</a>
+                            {% endif %}
+                            {% if perms.personal.delete_capacitacion %}
+                                | <a href="{% url 'personal:capacitacion_eliminar' capacitacion.pk %}">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No existen capacitaciones registradas.</p>
+    {% endif %}
+    <hr><a href="{% url 'personal:empleado_lista' %}">Volver a empleados</a>
+{% endblock %}

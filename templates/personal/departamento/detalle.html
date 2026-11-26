@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Detalle del Departamento{% endblock %}
+{% block content %}
+<h1>Detalle del Departamento</h1>
+    <p><strong>ID:</strong> {{ departamento.id }}</p>
+    <p><strong>Nombre:</strong> {{ departamento.nombre }}</p>
+    <p><strong>Descripción:</strong> {{ departamento.descripcion }}</p>
+    <h2>Empleados del departamento</h2>
+    <ul>
+        {% for empleado in departamento.empleados.all %}
+            <li><a href="{% url 'personal:empleado_detalle' empleado.pk %}">{{ empleado }}</a></li>
+        {% empty %}<li>No hay empleados asociados.</li>{% endfor %}
+    </ul>
+    <hr>
+    <a href="{% url 'personal:departamento_lista' %}">Volver a la lista</a>
+    {% if perms.personal.change_departamento %}
+        | <a href="{% url 'personal:departamento_editar' departamento.pk %}">Editar departamento</a>
+    {% endif %}
+{% endblock %}

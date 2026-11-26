@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <hr>
+
+    <a href="{% url 'personal:cargo_lista' %}">Cancelar</a>
+{% endblock %}

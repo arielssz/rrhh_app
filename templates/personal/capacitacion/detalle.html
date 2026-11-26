@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Detalle de Capacitación{% endblock %}
+{% block content %}
+<h1>Detalle de Capacitación</h1>
+    <p><strong>ID:</strong> {{ capacitacion.id }}</p>
+    <p><strong>Nombre:</strong> {{ capacitacion.nombre }}</p>
+    <p><strong>Descripción:</strong> {{ capacitacion.descripcion|default:"Sin descripción" }}</p>
+    <p><strong>Modalidad:</strong> {{ capacitacion.get_modalidad_display }}</p>
+    <p><strong>Fecha de inicio:</strong> {{ capacitacion.fecha_inicio }}</p>
+    <p><strong>Fecha de finalización:</strong> {{ capacitacion.fecha_fin }}</p>
+    <p><strong>Duración:</strong> {{ capacitacion.duracion_horas }} horas</p>
+    <p><strong>Estado:</strong> {{ capacitacion.activa|yesno:"Activa,Inactiva" }}</p>
+    <h2>Empleados inscritos</h2>
+    <ul>
+        {% for empleado in capacitacion.empleados.all %}
+            <li><a href="{% url 'personal:empleado_detalle' empleado.pk %}">{{ empleado }}</a></li>
+        {% empty %}<li>No hay empleados inscritos.</li>{% endfor %}
+    </ul>
+    <hr>
+    <a href="{% url 'personal:capacitacion_lista' %}">Volver</a>
+    {% if perms.personal.change_capacitacion %}
+        | <a href="{% url 'personal:capacitacion_editar' capacitacion.pk %}">Editar</a>
+    {% endif %}
+{% endblock %}
